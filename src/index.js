@@ -5,6 +5,7 @@ const path = require("path");
 const stack = require("callsite");
 
 // * -------------- Manual Method -------------- *
+
 export const MockHOC = (path, methodName) => hocProp => {
   if (!path || typeof path !== "string")
     throw `MockHoc | MockHocHierarchy: the path provided was not valid, but instead: ${path}`;
@@ -35,11 +36,6 @@ export const MockHOCHierarchy = (mocks, reset = true) => requireName => {
 };
 
 // * -------------- Automated Method -------------- *
-export const StartingCase = {
-  Lower: 0,
-  Upper: 1
-};
-
 const GetFileName = file => {
   const withExt = file.split(/(\\|\/)/g).pop();
   return withExt.split(".")[0]; // ? without the extension
@@ -49,10 +45,10 @@ const SetFirstCase = (text, firstCase) => {
   if (text.length < 1) return text;
 
   switch (firstCase) {
-    case StartingCase.Upper:
+    case "#uc":
       text = text.charAt(0).toUpperCase() + text.slice(1);
       break;
-    case StartingCase.Lower:
+    case "#lc":
       text = text.charAt(0).toLowerCase() + text.slice(1);
       break;
   }
@@ -60,15 +56,12 @@ const SetFirstCase = (text, firstCase) => {
   return text;
 };
 
-const constructMockHoc = (
-  wrappedComponentPath,
-  origin = null,
-  clearOnCreation = true
-) => new MockHoc(wrappedComponentPath, origin, clearOnCreation);
+const constructMockHoc = (wrappedComponentPath, origin = null, clearOnCreation = true) =>
+  new MockHoc(wrappedComponentPath, origin, clearOnCreation);
 
 class MockHoc {
   constructor(wrappedComponentPath, origin = null, clearOnCreation = true) {
-    this.import = this.import.bind(this);
+    this.mock = this.mock.bind(this);
     this.with = this.with.bind(this);
     this.clear = this.clear.bind(this);
     this.create = this.create.bind(this);
@@ -91,17 +84,16 @@ class MockHoc {
     }
 
     // ? if the origin does not end with a trailing '/', then one needs to be added to reduce failure from origin + path
-    if (this.origin && this.origin[this.origin.length - 1] != "/")
-      this.origin += "/";
+    if (this.origin && this.origin[this.origin.length - 1] != "/") this.origin += "/";
   }
 
-  import(path, methodName = 1, useCustomPath = true) {
-    if (!path || typeof path !== "string")
-      throw `MockHoc: [import] missing path, instead recieved ${path}`;
+  mock(path, methodName = "#uc", useCustomPath = true) {
+    if (!path || typeof path !== "string") throw `MockHoc: [import] missing path, instead recieved ${path}`;
 
     // ? if no method is specified then try and parse it out of the path
-    if (typeof methodName != "string")
-      methodName = SetFirstCase(GetFileName(path), methodName); // ? <-- methodName can be a number matching the StartingCase, if it is not a string
+    if (!methodName || typeof methodName !== "string") methodName = "#uc";
+
+    if (methodName == "#uc" || methodName == "#lc") methodName = SetFirstCase(GetFileName(path), methodName); // ? <-- methodName can be a number matching the StartingCase, if it is not a string
 
     if (useCustomPath) path = this.origin + path;
 
@@ -119,10 +111,7 @@ class MockHoc {
     const importCount = this.imported.length;
     if (importCount < 1) return;
 
-    this.imported[importCount - 1].hocProp = _.assign(
-      this.imported[importCount - 1].hocProp,
-      injectedProps
-    );
+    this.imported[importCount - 1].hocProp = _.assign(this.imported[importCount - 1].hocProp, injectedProps);
 
     return this;
   }
@@ -133,9 +122,7 @@ class MockHoc {
   }
 
   create(target = "default") {
-    const req = MockHOCHierarchy(this.imported, false)(
-      this.origin + this.requiredPath
-    );
+    const req = MockHOCHierarchy(this.imported, false)(this.origin + this.requiredPath);
 
     // ? if the specified target is not found, then attempt to find a predicted target name instead
     // ?? if it finds neither, then throw a detailed, helpful error (as opposed to how jest handles it)
