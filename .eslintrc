@@ -2,12 +2,16 @@
   "extends": "eslint:recommended",
   "parserOptions": {
     "ecmaVersion": 8,
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
   "env": {
     "node": true
   },
   "rules": {
     "no-console": "off"
-  }
+  },
+  "plugins": ["jest", "react"]
 }

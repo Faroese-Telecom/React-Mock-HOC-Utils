@@ -1,11 +1,12 @@
 {
   "name": "react-mock-hoc-utils",
-  "version": "0.1.0",
-  "description": "A Higher-Order-Component mocking tool that allows for mocking any component that is wrapped by one or more HOCs - additionally, supporting prop injection on a per-hoc-basis. Is built for React and Jest.",
-  "main": "lib/index.js",
+  "version": "1.0.0",
+  "description": "\"A Higher-Order-Component mocking tool that allows for mocking any component that is wrapped by one or more HOCs - additionally, supporting prop injection on a per-hoc-basis. Is built for React and Jest.",
+  "main": "./lib/index.js",
   "scripts": {
     "clean": "rimraf dist",
-    "build": "npm run clean && node node_modules/@babel/cli/bin/babel.js src --out-dir lib"
+    "build": "npm run clean && node node_modules/babel-cli/bin/babel.js src --out-dir lib",
+    "test": "npm run test"
   },
   "repository": {
     "type": "git",
@@ -23,16 +24,28 @@
   },
   "homepage": "https://github.com/Faroese-Telecom/React-Mock-HOC-Utils#readme",
   "dependencies": {
+    "callsite": "^1.0.0",
     "lodash": "^4.17.11"
   },
   "devDependencies": {
-    "@babel/cli": "^7.2.0",
-    "@babel/core": "^7.2.0",
-    "@babel/node": "^7.2.0",
-    "@babel/preset-env": "^7.2.0",
-    "callsite": "^1.0.0",
-    "eslint": "^5.9.0",
-    "jest": "^23.6.0",
-    "rimraf": "^2.6.2"
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^23.6.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2015-node": "^6.1.1",
+    "babel-preset-react": "^6.24.1",
+    "enzyme": "^3.8.0",
+    "jest": "^21.0.1",
+    "react": "^15.6.1",
+    "react-test-renderer": "^15.6.1",
+    "rimraf": "^2.6.3"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageFormats": [
+      "json",
+      "html"
+    ]
   }
 }
