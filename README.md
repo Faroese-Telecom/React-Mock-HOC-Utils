@@ -119,7 +119,7 @@ The `create` method is the only thing that does not return itself, but instead, 
 
 There are multiple shallow diving methods available in this utility - they are as follows:
 
-Each of one of them take in a `shallow` component as their first parameter. Meaning that for it to function, you have to pass in a `shallow` object by [Enzyme](https://github.com/airbnb/enzyme). The reason for it is because of the diving method inside the `shallow` object.
+Each of one of them take in a `shallow` component as their first parameter. Meaning that for it to function, you have to pass in a `shallow` object by [Enzyme](https://github.com/airbnb/enzyme). The reason for it is because of the diving method inside the `shallow` object. Each one returns a `shallow` object back in respect to the amount of dives it did.
 
 ```js
 diveThroughComponents(shallow(<MyComponent />), [View, Text]);
