@@ -33,7 +33,7 @@ const MyWrappedComponent = constructMockHoc("../MyWrappedComponent.js")
   .mock("../HigherOrderComponent__3.js")
   .with({ anotherProp: "flower" })
 
-  .apply();
+  .create();
 
 const mockedWrappedComponent = shallow(<MyWrappedComponent />)
   .dive()
