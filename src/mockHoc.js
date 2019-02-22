@@ -109,9 +109,9 @@ class MockHoc {
     // ?? if it finds neither, then throw a detailed, helpful error (as opposed to how jest handles it)
     if (!req[target]) {
       if (!req[this.potentialRequireMethodName])
-        throw `MockHoc [apply]: could not find the exported target, "${target}, nor could it find the fallback target, ${
+        throw `MockHoc [create]: could not find the exported target, "${target}", nor could it find the fallback target, "${
           this.potentialRequireMethodName
-        }`;
+        }"`;
 
       target = this.potentialRequireMethodName;
     }
