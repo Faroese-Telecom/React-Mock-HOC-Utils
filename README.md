@@ -111,6 +111,18 @@ The `create` method is the only thing that does not return itself, but instead, 
 
 <br>
 
+## createPure
+
+The `createPure` is a simplified version of the regular `create` function, where it simply returns the mocked component, where you have to handle the re-requiring of the wrapped component yourself.
+
+```js
+/*...*/.mock(/*...*/).createPure();
+```
+
+This may be desirable, if the mocked component does not contain a `default` export, or any other export object for that matter.
+
+<br>
+
 ---
 
 <br>

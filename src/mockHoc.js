@@ -42,6 +42,7 @@ class MockHoc {
     this.with = this.with.bind(this);
     this.clear = this.clear.bind(this);
     this.create = this.create.bind(this);
+    this.createPure = this.createPure.bind(this);
 
     if (clearOnCreation) this.clear();
 
@@ -100,6 +101,10 @@ class MockHoc {
   clear() {
     jest.resetModules();
     return this;
+  }
+
+  createPure() {
+    return MockHOCHierarchy(this.imported)(this.origin + this.requiredPath);
   }
 
   create(target = "default") {
