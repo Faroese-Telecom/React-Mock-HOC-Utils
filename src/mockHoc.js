@@ -11,15 +11,24 @@ export const jestMockHocMethod = (path, method) => jest.doMock(path, () => metho
 const MockHOC = (path, methodName, mockFunction) => hocProp => {
   if (!path || typeof path !== "string")
     throw `MockHoc | MockHocHierarchy: the path provided was not valid, but instead: ${path}`;
-  if (!methodName || typeof methodName !== "string")
-    throw `MockHoc | MockHocHierarchy: the methodName provided was not valid, but instead: ${methodName}`;
 
-  let mockMethod = {};
-  mockMethod[methodName] = WrappedComponent => props => {
+  // ? if no method name is specified, then the mock method will be directly assigned to the mockMethod.
+  // ?? otherwise, a sub-object named the >methodName< will be injected into the mockMethod, containing the mock method
+  const wrapMethod = WrappedComponent => props => {
     if (hocProp) props = _.assign(hocProp, props);
 
     return <WrappedComponent {...props} />;
   };
+
+  let mockMethod = {};
+  if (methodName) mockMethod[methodName] = wrapMethod;
+  else mockMethod = wrapMethod;
+
+  // mockMethod[methodName] = WrappedComponent => props => {
+  //   if (hocProp) props = _.assign(hocProp, props);
+
+  //   return <WrappedComponent {...props} />;
+  // };
   mockFunction(path, mockMethod);
   //jest.doMock(path, () => mockMethod);
 };
@@ -65,13 +74,11 @@ class MockHoc {
     if (this.origin && this.origin[this.origin.length - 1] != "/") this.origin += "/";
   }
 
-  mock(path, methodName = "#uc", contextModuleMethod = null) {
+  mock(path, methodName, contextModuleMethod = null) {
     if (!path || typeof path !== "string") throw `MockHoc: [mock] missing path, instead recieved ${path}`;
 
     // ? if no method is specified then try and parse it out of the path
-    if (!methodName || typeof methodName !== "string") methodName = "#uc";
-
-    if (methodName == "#uc" || methodName == "#lc") methodName = SetFirstCase(GetFileName(path), methodName); // ? <-- methodName can be a number matching the StartingCase, if it is not a string
+    if (methodName == "#uc" || methodName == "#lc") methodName = SetFirstCase(GetFileName(path), methodName);
 
     if (typeof contextModuleMethod !== "function") {
       path = this.origin + path;

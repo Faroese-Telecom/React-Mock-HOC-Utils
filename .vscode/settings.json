@@ -1,3 +1,4 @@
 {
-    "prettier.printWidth": 110
+    "prettier.printWidth": 110,
+    "jest.pathToJest": "node_modules/.bin/jest"
 }
