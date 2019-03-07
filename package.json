@@ -1,6 +1,6 @@
 {
   "name": "react-mock-hoc-utils",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "\"A Higher-Order-Component mocking tool that allows for mocking any component that is wrapped by one or more HOCs - additionally, supporting prop injection on a per-hoc-basis. Is built for React and Jest.",
   "main": "./lib/index.js",
   "scripts": {
@@ -54,7 +54,6 @@
     "jsdom-global": "^3.0.2",
     "react": "^15.6.1",
     "react-dom": "^16.8.4",
-    "react-mock-hoc-utils": "^0.1.0",
     "react-test-renderer": "^15.6.1",
     "rimraf": "^2.6.3",
     "test-component-builder": "^0.2.3"
